@@ -22,11 +22,7 @@ class LoadStreamlitUI:
                 "Select LLM",
                 options=self.config.get_llm_options(),
             )
-            self.user_controls['selected_usecase'] = st.selectbox(
-                "Select Use Case",
-                options=self.config.get_usecase_options(),
-            )
-            
+
             if self.user_controls['selected_llm'] == 'Groq':
 
                 self.user_controls['selected_groq_model'] = st.selectbox(
@@ -39,5 +35,18 @@ class LoadStreamlitUI:
                 )
                 if not self.user_controls["GROQ_API_KEY"]:
                     st.warning("Please enter your Groq API Key to use Groq models. Don't have? refer : https://console.groq.com/keys ")
+
+            self.user_controls['selected_usecase'] = st.selectbox(
+                "Select Use Case",
+                options=self.config.get_usecase_options(),
+            )
+            
+            if self.user_controls['selected_usecase'] == 'Chatbot With Web':
+                os.environ["TAVILY_API_KEY"] = self.user_controls["TAVILY_API_KEY"] = st.session_state["TAVILY_API_KEY"] = st.text_input(
+                    "Enter TAVILY API Key",
+                    type="password",
+                )
+                if not self.user_controls["TAVILY_API_KEY"]:
+                    st.warning("Please enter your TAVILY API Key to use Web Search. Don't have? refer : https://tavily.com/")
 
         return self.user_controls
